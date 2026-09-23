@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# 本地需求与原型，不进公开仓库
+WorkLife_PRD*.md
+WorkLife_Prototype*.html
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
