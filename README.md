@@ -158,7 +158,7 @@ Current tests cover work-hour calculations, lunch deduction, reminders, holiday 
 
 ---
 
-## Developer Commands
+## 🛠 Developer Commands
 
 ```bash
 npm run dev
