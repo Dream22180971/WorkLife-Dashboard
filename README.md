@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Space+Grotesk&weight=700&size=30&duration=2200&pause=900&color=F59E0B&center=true&vCenter=true&width=900&lines=TURN+YOUR+WORKDAY+INTO+A+PROGRESS+BAR;LOCAL-FIRST+%C2%B7+PRIVATE+%C2%B7+DESKTOP+WIDGETS" alt="Typing SVG" />
-
 # WorkLife Dashboard
 
 **Turn the workday into a private, local-first progress bar with reminders and desktop widgets.**
