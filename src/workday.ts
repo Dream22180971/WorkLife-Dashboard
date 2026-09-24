@@ -95,8 +95,10 @@ export function dueReminder(now: Date, settings: Settings, record: RecordDay, vi
 export function currentTimelineStage(now: Date, settings: Settings, record: RecordDay, view = calculateDay(now, settings, record)) {
   if (!record.start || record.clockOut || record.mode === "leave") return null;
   if (view.lunching) return "lunch";
-  if (view.targetReached) return "target";
+  const targetAt = /^\d\d:\d\d$/.test(view.targetTime) ? at(dayFromKey(record.date), view.targetTime) : Infinity;
+  if (view.targetReached && targetAt >= view.endAt) return "target";
   if (now.getTime() >= view.endAt) return "end";
+  if (view.targetReached) return "target";
   if (!record.lunchEnd && now.getTime() < at(dayFromKey(record.date), record.todayLunchStart || settings.lunchStart)) return "start";
   return "continue";
 }

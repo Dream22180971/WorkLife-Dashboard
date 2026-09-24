@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { calculateDay, currentTimelineStage, defaults, dueReminder, emptyDay, validateSettings } from "./workday.ts";
 import { isLastWorkdayOfWeek, isRestDay, nextHoliday, nextRestDay } from "./holidays.ts";
-import { collectAlerts } from "./notifications.ts";
+import { collectAlerts, scheduleAlerts } from "./notifications.ts";
 import { nextPayday, salaryEstimate, upcomingCountdowns, weeklySummary } from "./insights.ts";
 
 const day = "2026-09-23";
@@ -96,6 +96,17 @@ test("scheduled start prompts for a clock-in before the day begins", () => {
   assert.ok(!collectAlerts(local(9, 5), defaults, record()).some(item => item.id === "start-work"));
 });
 
+test("background plan schedules reminders without a foreground timer", () => {
+  const settings = { ...defaults, waterMinutes: 60, stretchMinutes: 90 };
+  const alerts = scheduleAlerts(local(9, 10), settings, record());
+  assert.equal(alerts.find(item => item.id.startsWith("water:"))?.dueMs, local(10).getTime());
+  assert.equal(alerts.find(item => item.id.startsWith("stretch:"))?.dueMs, local(10, 30).getTime());
+  assert.equal(alerts.find(item => item.id === "company-end")?.dueMs, local(18).getTime());
+  const paused = scheduleAlerts(local(9, 10), settings, { ...record(), remindersPausedUntil: local(10, 15).toISOString() });
+  assert.equal(paused.find(item => item.id.startsWith("water:"))?.dueMs, local(10, 15).getTime());
+  assert.deepEqual(scheduleAlerts(local(9, 10), settings, { ...record(), remindersOff: true }), []);
+});
+
 test("invalid work and lunch hours are rejected", () => {
   assert.ok(validateSettings({ ...defaults, end: "08:00" }));
   assert.ok(validateSettings({ ...defaults, lunchEnd: "19:00" }));
@@ -148,5 +159,6 @@ test("timeline highlights the current stage and clears after checkout", () => {
   assert.equal(currentTimelineStage(local(14), defaults, active), "continue");
   assert.equal(currentTimelineStage(local(18, 5), defaults, active), "end");
   assert.equal(currentTimelineStage(local(18, 30), defaults, active), "target");
+  assert.equal(currentTimelineStage(local(19), { ...defaults, targetHours: 7 }, active), "end");
   assert.equal(currentTimelineStage(local(19), defaults, { ...active, clockOut: local(19).toISOString() }), null);
 });

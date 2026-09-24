@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { dateKey, isLastWorkdayOfWeek, nextHoliday, nextRestDay } from "./holidays";
 import { applyDesktopSettings, desktopAvailable, initializeWidget, openDashboard, resetDesktopState } from "./desktop";
-import { clearNotificationHistory, notifyDueAlerts, sendTestNotification } from "./notifications";
+import { clearNotificationHistory, notifyDueAlerts, sendTestNotification, syncBackgroundAlerts } from "./notifications";
 import { nextPayday, salaryEstimate, upcomingCountdowns, weeklySummary } from "./insights";
 import { calculateDay, currentTimelineStage, defaults, dueReminder, emptyDay, formatDuration, validateSettings, type RecordDay, type Settings } from "./workday";
 import "./App.css";
@@ -117,7 +117,8 @@ function App() {
   useEffect(() => { const choice = isWidget ? settings.theme : editing ? draft.theme : settings.theme; document.documentElement.dataset.theme = choice === "system" ? systemDark ? "dark" : "light" : choice; }, [settings.theme, draft.theme, editing, isWidget, systemDark]);
   useEffect(() => () => localStorage.removeItem(opacityPreviewKey), []);
   useEffect(() => { if (isWidget || !configured) return; void applyDesktopSettings(settings).catch(cause => setDesktopError(String(cause))); }, [settings, configured, isWidget]);
-  useEffect(() => { if (isWidget || !configured) return; void notifyDueAlerts(now, settings, record).catch(cause => setDesktopError(`通知未能发送：${String(cause)}`)); }, [now, settings, record, configured, isWidget]);
+  useEffect(() => { if (isWidget || !desktopAvailable) return; void syncBackgroundAlerts(new Date(), settings, record, configured).catch(cause => setDesktopError(`后台提醒未能安排：${String(cause)}`)); }, [settings, record, configured, isWidget]);
+  useEffect(() => { if (isWidget || !configured || desktopAvailable) return; void notifyDueAlerts(now, settings, record).catch(cause => setDesktopError(`通知未能发送：${String(cause)}`)); }, [now, settings, record, configured, isWidget]);
   if (isWidget) return <Widget now={now} settings={settings} record={record} />;
 
   const save = () => {
