@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { dateKey, isLastWorkdayOfWeek, nextHoliday, nextRestDay } from "./holidays";
 import { applyDesktopSettings, desktopAvailable, initializeWidget, openDashboard, resetDesktopState } from "./desktop";
 import { clearNotificationHistory, notifyDueAlerts } from "./notifications";
@@ -10,6 +11,13 @@ const settingsKey = "worklife.settings";
 const recordKey = "worklife.day";
 const historyKey = "worklife.history";
 const opacityPreviewKey = "worklife.widget.opacityPreview";
+const authorUrl = "https://github.com/Dream22180971";
+const feedbackUrl = "https://github.com/Dream22180971/WorkLife-Dashboard/issues/new";
+function openCommunityLink(event: React.MouseEvent<HTMLAnchorElement>, url: string) {
+  if (!desktopAvailable) return;
+  event.preventDefault();
+  void openUrl(url).catch(() => window.open(url, "_blank", "noopener,noreferrer"));
+}
 const themeChoices: { value: Settings["theme"]; label: string }[] = [{ value: "dark", label: "深色" }, { value: "light", label: "浅色" }, { value: "system", label: "跟随系统" }];
 const dailyPhrases = ["今天也在好好生活。", "慢慢来，今天也算数。", "做完今天的事，去过自己的生活。", "留一点时间给自己。", "下班以后，才是你的时间。", "忙里也记得喝口水。", "把今天过成自己的节奏。"];
 function stored<T>(key: string, fallback: T): T { try { return JSON.parse(localStorage.getItem(key) || "null") || fallback; } catch { return fallback; } }
@@ -176,6 +184,7 @@ function App() {
       {settings.monthlySalary > 0 && !settings.salaryHidden && <section className="panel salary-panel"><div><p className="eyebrow">今日收入估算</p><strong>¥{salary.today.toFixed(2)}</strong></div><p>约 ¥{salary.hourly.toFixed(2)} / 小时 · 按本月 {salary.workdays} 个计划工作日计算 · 未含扣税及加班费</p></section>}
       <div className="outlook"><section className="panel timeline-panel"><p className="eyebrow">今天的状态时间轴</p><div className="timeline"><span className={activeStage === "start" ? "active" : undefined} aria-current={activeStage === "start" ? "step" : undefined}><small>{record.start || settings.start}</small><b>开始工作</b></span><span className={activeStage === "lunch" ? "active" : undefined} aria-current={activeStage === "lunch" ? "step" : undefined}><small>{record.todayLunchStart || settings.lunchStart}</small><b>午饭</b></span><span className={activeStage === "continue" ? "active" : undefined} aria-current={activeStage === "continue" ? "step" : undefined}><small>{record.todayLunchEnd || settings.lunchEnd}</small><b>继续工作</b></span><span className={activeStage === "end" ? "active" : undefined} aria-current={activeStage === "end" ? "step" : undefined}><small>{record.todayEnd || settings.end}</small><b>制度下班</b></span><span className={activeStage === "target" ? "active" : undefined} aria-current={activeStage === "target" ? "step" : undefined}><small>{view.targetTime}</small><b>目标达标</b></span></div></section><section className="panel merit-panel"><p className="eyebrow">今日功德</p><strong>+{record.merit || 0}</strong><p className="muted">轻点木鱼，给今天一点回应。</p><button className="woodfish-button" onClick={strikeWoodfish} aria-label="敲木鱼，功德加一"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M9 42c0-12 10-22 23-22s23 10 23 22c0 8-10 14-23 14S9 50 9 42Z" fill="currentColor"/><path d="M20 39c6 5 18 5 24 0M18 48c7 5 21 5 28 0" fill="none" stroke="#753d16" strokeWidth="3" strokeLinecap="round"/><circle cx="32" cy="33" r="3" fill="#753d16"/><path d="m45 8 10 19" stroke="#8e4b1b" strokeWidth="5" strokeLinecap="round"/><circle cx="56" cy="28" r="5" fill="#d5873e"/></svg><span>敲一下 +1</span></button></section></div>
       {record.start && !record.clockOut && <section className="actions"><div><p className="eyebrow">今日快捷操作</p><h2>按真实节奏记录今天</h2><p className="muted small">喝水 {record.waterCount || 0} 次 · 活动 {record.stretchCount || 0} 次</p></div><div>{!record.lunchStart && <button onClick={() => updateRecord({ lunchStart: now.toISOString() })}>我去吃饭了</button>}{record.lunchStart && !record.lunchEnd && <button onClick={() => updateRecord({ lunchEnd: now.toISOString() })}>继续工作</button>}<button className="primary" onClick={() => updateRecord({ clockOut: now.toISOString(), lunchEnd: record.lunchStart && !record.lunchEnd ? now.toISOString() : record.lunchEnd })}>我打卡了</button></div></section>}</>}
+    <footer className="contact-footer"><span>有想法？欢迎告诉作者。</span><div><a href={feedbackUrl} target="_blank" rel="noopener noreferrer" onClick={event => openCommunityLink(event, feedbackUrl)}>提建议 ↗</a><a href={authorUrl} target="_blank" rel="noopener noreferrer" onClick={event => openCommunityLink(event, authorUrl)}>作者 GitHub ↗</a></div></footer>
   </main>;
 }
 
