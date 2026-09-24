@@ -15,7 +15,7 @@
 
 ---
 
-## What it is
+## 🎯 What it is
 
 WorkLife Dashboard is a desktop companion for people who want to see how much of the workday is left without turning work into another productivity competition.
 
@@ -23,7 +23,7 @@ WorkLife Dashboard is a desktop companion for people who want to see how much of
 
 ---
 
-## Demo
+## 🎬 Demo
 
 <div align="center">
 
@@ -37,7 +37,7 @@ WorkLife Dashboard is a desktop companion for people who want to see how much of
 
 ---
 
-## Get it
+## 📦 Get it
 
 Download the latest portable Windows build from **GitHub Releases**. No installer is required.
 
@@ -59,7 +59,7 @@ Requirements:
 
 ---
 
-## Highlights
+## ✨ Highlights
 
 | Feature | What it does |
 |---|---|
@@ -74,7 +74,7 @@ Requirements:
 
 ---
 
-## Daily Flow
+## ⏱ Daily Flow
 
 ```text
 Start
@@ -96,7 +96,7 @@ The app keeps **company off-work time** and **target work hours** as separate si
 
 ---
 
-## Widget Modes
+## 🖥 Widget Modes
 
 | Size | Shows |
 |---|---|
@@ -108,7 +108,7 @@ The widget supports position memory, transparency and always-on-top behavior.
 
 ---
 
-## Reminder System
+## 🔔 Reminder System
 
 Available reminders include:
 
@@ -125,7 +125,7 @@ Recurring work reminders can be enabled or disabled independently.
 
 ---
 
-## China Work Schedule Support
+## 🇨🇳 China Work Schedule Support
 
 Supported modes include:
 
@@ -139,7 +139,7 @@ Holiday data is configured explicitly rather than guessed.
 
 ---
 
-## Privacy & Local-first
+## 🔐 Privacy & Local-first
 
 - No account system.
 - No cloud sync.
@@ -148,7 +148,7 @@ Holiday data is configured explicitly rather than guessed.
 
 ---
 
-## Testing
+## 🧪 Testing
 
 ```bash
 npm test
@@ -178,7 +178,7 @@ npm run tauri build
 
 ---
 
-## Roadmap
+## 🗺 Roadmap
 
 - [x] Workday progress
 - [x] Desktop widgets
@@ -195,13 +195,13 @@ npm run tauri build
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Bug reports, UX ideas and small feature PRs are welcome, especially around widgets, reminders and Windows desktop behavior.
 
 ---
 
-## License
+## 📄 License
 
 MIT © Dreamer
 
