@@ -38,11 +38,11 @@
 
 ## 📦 获取（仅便携版）
 
-**只提供单文件便携版**：下载 `摸鱼助手.exe`，双击即用——无需安装、无需 Node/Rust、数据全在本机。
+**只提供单文件便携版**：下载 `WorkLife-Dashboard-v0.1.0.exe`，双击即用——无需安装、无需 Node/Rust、数据全在本机。应用显示名称是「摸鱼助手」。
 
 | 方式 | 说明 |
 |:---|:---|
-| Releases | 从 [GitHub Releases](https://github.com/Dream22180971/WorkLife-Dashboard/releases) 下载最新 `摸鱼助手.exe` |
+| Releases | 从 [GitHub Releases](https://github.com/Dream22180971/WorkLife-Dashboard/releases) 下载最新便携版 exe |
 | 自行构建 | 见下方开发者命令，产物在 `src-tauri/target/release/摸鱼助手.exe` |
 
 > 首次运行若被 SmartScreen 拦截：点「更多信息」→「仍要运行」（个人分发未签名常见提示）。
