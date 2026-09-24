@@ -44,3 +44,8 @@ export async function openDashboard() {
   await main?.show();
   await main?.setFocus();
 }
+
+export async function resetDesktopState(settings: Settings) {
+  localStorage.removeItem(positionKey);
+  await applyDesktopSettings(settings);
+}

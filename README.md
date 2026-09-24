@@ -2,18 +2,18 @@
 
 # ◌ 摸鱼助手
 
-### *WorkLife Dashboard —— 把上班，变成一场有进度条的游戏*
+### *把上班，变成一场有进度条的游戏*
 
 [![Tauri](https://img.shields.io/badge/Tauri-2.x-24C8DB?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
-[![Tests](https://img.shields.io/badge/tests-10%20passing-brightgreen?style=flat-square)](#-测试)
+[![Tests](https://img.shields.io/badge/tests-15%20passing-brightgreen?style=flat-square)](#-测试)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](#-许可证)
 
 **公司要你「加油」，它只负责告诉你：还剩多久下班。**
 
-**[设计哲学](#-设计哲学)** · **[快速开始](#-快速开始)** · **[功能一览](#-功能一览)** · **[路线图](#️-路线图)** · **[许可证](#-许可证)**
+**[设计哲学](#-设计哲学)** · **[获取](#-获取仅便携版)** · **[开发者](#-开发者)** · **[功能一览](#-功能一览)** · **[路线图](#️-路线图)** · **[许可证](#-许可证)**
 
 </div>
 
@@ -36,7 +36,22 @@
 
 ---
 
-## 🚀 快速开始
+## 📦 获取（仅便携版）
+
+**只提供单文件便携版**：下载 `摸鱼助手.exe`，双击即用——无需安装、无需 Node/Rust、数据全在本机。
+
+| 方式 | 说明 |
+|:---|:---|
+| Releases | 从 [GitHub Releases](https://github.com/Dream22180971/WorkLife-Dashboard/releases) 下载最新 `摸鱼助手.exe` |
+| 自行构建 | 见下方开发者命令，产物在 `src-tauri/target/release/摸鱼助手.exe` |
+
+> 首次运行若被 SmartScreen 拦截：点「更多信息」→「仍要运行」（个人分发未签名常见提示）。
+
+首次进入会问你一句：**「今天几点开始工作？」** 答完，进度条就开始转了。
+
+---
+
+## 🛠 开发者
 
 ```bash
 git clone https://github.com/Dream22180971/WorkLife-Dashboard.git
@@ -53,12 +68,11 @@ npm run tauri dev
 | `npm run tauri dev` | 完整桌面版 ⭐ |
 | `npm test` | 跑工时/假日/提醒的单元测试 |
 | `npm run build` | 类型检查 + 生产构建 |
-
-首次进入会问你一句：**「今天几点开始工作？」** 答完，进度条就开始转了。
+| `npm run tauri build` | 出便携版 `摸鱼助手.exe`（已配置为不打安装包） |
 
 ---
 
-## 🛠 功能一览
+## ✨ 功能一览
 
 ### ⏱ 今日节奏
 
@@ -90,7 +104,7 @@ npm run tauri dev
 
 ### 🔔 提醒（Windows 系统通知）
 
-下班前 30 分钟 · 到点下班 · 午饭/午休 · 目标工时达标 · 喝水 · 久坐 · 本周收尾（周报、工时填报，默认关闭）。全部可稍后 10 分钟，也可以「今天关闭」。
+下班前 30 分钟 · 到点下班 · 午饭/午休 · 目标工时达标 · 喝水 · 久坐 · 本周收尾（周报、工时填报，默认关闭）。主窗口缩进托盘后，应用仍会检查并发送系统通知；喝水和活动的页内提示可稍后 10 分钟或今天关闭。
 
 ### 🪵 电子木鱼
 
@@ -99,6 +113,18 @@ npm run tauri dev
 ### 🎨 外观
 
 深色 / 浅色 / 跟随系统（默认深色），主题随手切，Widget 透明度同步变。
+
+### 💰 盼头与回顾
+
+设置发薪日、旅行或生日，首页会告诉你还要等几天。可填月薪估算今日收入，也能一键隐藏金额；估算按当月计划工作日和目标工时计算，不包含税费与加班费。每周小结展示有效工时、日均工时、加班、平均打卡时间、功德和喝水次数。
+
+### 🗓 今天例外
+
+今天提前下班、午休改时间、出差或居家？在首页点「今天特殊安排」，只改今天。请假会暂停工作提醒；喝水、活动和下班提醒也可暂停 30 分钟、1 小时或今天剩余时间。
+
+### 🧯 兜底按钮
+
+设置页底部可以「恢复默认设置」（保留打卡记录），也可以「清空全部本地数据」（连历史、工资、盼头一起清空）。清空前会二次确认；手滑一次，不至于把打工回忆送走。
 
 ---
 
@@ -110,8 +136,10 @@ npm run tauri dev
 - [x] 中国工作制 · 2026 节假日/调休 · 喝水久坐提醒 · 木鱼
 - [x] Widget 三尺寸 · 透明度/置顶/位置记忆 · 开机启动 · 系统托盘
 - [x] Windows 系统通知 · 周期事项（周报/工时）· 三主题 · 本地归档
-- [ ] 发薪日 · 实时工资 · 自定义盼头 · 今日临时作息
-- [ ] 请假/出差/居家模式 · 周统计 · 月报/报销
+- [x] 发薪日 · 今日工资估算 · 自定义盼头 · 今日临时作息
+- [x] 请假/出差/居家状态 · 周统计 · 一键暂停提醒
+- [x] 正在进行的时间轴节点高亮 · 恢复默认设置 · 清空本地数据
+- [ ] 月报/报销模板 · 周期事项的独立提醒时间
 - [ ] 贴边隐藏 · 鼠标穿透 · 锁定位置 · 多屏记忆 · 全局快捷键
 
 ---
@@ -122,7 +150,7 @@ npm run tauri dev
 npm test
 ```
 
-覆盖工时计算、午休扣减、提醒间隔、2026 假日/调休、大小周与自定义工作制、周期收尾日、设置校验等 **10 个用例**。
+覆盖工时计算、午休扣减、提醒间隔、2026 假日/调休、大小周与自定义工作制、周期收尾日、今日临时作息、请假暂停、工资、周统计和时间轴高亮等 **15 个用例**。
 
 ---
 

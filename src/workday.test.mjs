@@ -1,8 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { calculateDay, defaults, dueReminder, emptyDay, validateSettings } from "./workday.ts";
+import { calculateDay, currentTimelineStage, defaults, dueReminder, emptyDay, validateSettings } from "./workday.ts";
 import { isLastWorkdayOfWeek, isRestDay, nextHoliday, nextRestDay } from "./holidays.ts";
 import { collectAlerts } from "./notifications.ts";
+import { nextPayday, salaryEstimate, upcomingCountdowns, weeklySummary } from "./insights.ts";
 
 const day = "2026-09-23";
 const local = (hour, minute = 0) => new Date(2026, 8, 23, hour, minute, 0);
@@ -91,5 +92,54 @@ test("native alert plan includes enabled weekly tasks and work milestones", () =
 test("invalid work and lunch hours are rejected", () => {
   assert.ok(validateSettings({ ...defaults, end: "08:00" }));
   assert.ok(validateSettings({ ...defaults, lunchEnd: "19:00" }));
+  assert.ok(validateSettings({ ...defaults, countdowns: [{ id: "x", title: "旅行", date: "2026-02-30" }] }));
   assert.equal(validateSettings(defaults), null);
+});
+
+test("today-only schedule changes countdown and native alert time", () => {
+  const changed = { ...record(), todayEnd: "17:00", todayLunchStart: "11:30", todayLunchEnd: "12:30" };
+  const view = calculateDay(local(16, 35), defaults, changed);
+  assert.equal(view.endAt, local(17).getTime());
+  assert.equal(view.targetTime, "18:00");
+  assert.ok(collectAlerts(local(16, 35), defaults, changed).some(alert => alert.id === "before-end"));
+  assert.ok(!collectAlerts(local(16, 35), defaults, record()).some(alert => alert.id === "before-end"));
+});
+
+test("leave and paused reminders suppress notifications", () => {
+  const onLeave = { ...record(), mode: "leave" };
+  assert.equal(calculateDay(local(10), defaults, onLeave).status, "请假中");
+  assert.deepEqual(collectAlerts(local(17, 35), defaults, onLeave), []);
+  const paused = { ...record(), remindersPausedUntil: local(19).toISOString() };
+  assert.deepEqual(collectAlerts(local(17, 35), defaults, paused), []);
+});
+
+test("payday and personal countdowns include today and month-end", () => {
+  assert.equal(nextPayday(new Date(2026, 1, 28), 31).daysUntil, 0);
+  assert.equal(nextPayday(new Date(2026, 2, 1), 31).daysUntil, 30);
+  assert.deepEqual(upcomingCountdowns(local(9), [{ id: "old", title: "过去", date: "2026-09-22" }, { id: "trip", title: "旅行", date: "2026-09-26" }]).map(item => item.daysUntil), [3]);
+});
+
+test("salary and weekly summary use recorded work and checkout", () => {
+  const salary = salaryEstimate(local(18), { ...defaults, monthlySalary: 22000 }, 3600);
+  assert.ok(salary.hourly > 0);
+  assert.equal(salary.today, salary.hourly);
+  const finished = { ...record(), clockOut: local(19).toISOString(), merit: 3, waterCount: 2 };
+  const summary = weeklySummary(local(20), defaults, [finished]);
+  assert.equal(summary.worked, 30600);
+  assert.equal(summary.overtime, 3600);
+  assert.equal(summary.averageClockOut, "19:00");
+  assert.equal(summary.merit, 3);
+  assert.equal(summary.water, 2);
+  const lateStart = weeklySummary(local(23), defaults, [{ ...record("22:00"), clockOut: local(23).toISOString() }]);
+  assert.equal(lateStart.overtime, 3600);
+});
+
+test("timeline highlights the current stage and clears after checkout", () => {
+  const active = record();
+  assert.equal(currentTimelineStage(local(10), defaults, active), "start");
+  assert.equal(currentTimelineStage(local(12, 30), defaults, active), "lunch");
+  assert.equal(currentTimelineStage(local(14), defaults, active), "continue");
+  assert.equal(currentTimelineStage(local(18, 5), defaults, active), "end");
+  assert.equal(currentTimelineStage(local(18, 30), defaults, active), "target");
+  assert.equal(currentTimelineStage(local(19), defaults, { ...active, clockOut: local(19).toISOString() }), null);
 });

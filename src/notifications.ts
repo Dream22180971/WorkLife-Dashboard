@@ -4,6 +4,7 @@ import { calculateDay, dueReminder, type RecordDay, type Settings } from "./work
 
 export type WorkAlert = { id: string; title: string; body: string };
 const sentKey = "worklife.notifications.sent";
+export const clearNotificationHistory = () => localStorage.removeItem(sentKey);
 let permission: Promise<boolean> | null = null;
 let sending = false;
 
@@ -13,7 +14,7 @@ const at = (day: Date, time: string) => {
 };
 
 export function collectAlerts(now: Date, settings: Settings, record: RecordDay): WorkAlert[] {
-  if (!record.start || record.clockOut || record.remindersOff) return [];
+  if (!record.start || record.clockOut || record.remindersOff || record.mode === "leave" || (record.remindersPausedUntil && now.getTime() < new Date(record.remindersPausedUntil).getTime())) return [];
   if (record.date !== `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`) return [];
   const view = calculateDay(now, settings, record);
   const alerts: WorkAlert[] = [];
@@ -23,15 +24,15 @@ export function collectAlerts(now: Date, settings: Settings, record: RecordDay):
   };
 
   if (!view.lunching) {
-    event("before-end", at(now, settings.end) - 30 * 60000, "还有 30 分钟下班", "今天的工作快到公司下班时间了。");
-    event("company-end", at(now, settings.end), "到公司下班时间了", "需要打卡了吗？应用不会自动替你打卡。");
+    event("before-end", at(now, record.todayEnd || settings.end) - 30 * 60000, "还有 30 分钟下班", "今天的工作快到公司下班时间了。");
+    event("company-end", at(now, record.todayEnd || settings.end), "到公司下班时间了", "需要打卡了吗？应用不会自动替你打卡。");
   }
   if (view.targetReached) alerts.push({ id: "target-reached", title: "今日目标工时已达标", body: `有效工作已满 ${settings.targetHours} 小时，可以打卡了。` });
   if (view.lunching) {
-    const lunchEnd = at(now, settings.lunchEnd);
+    const lunchEnd = at(now, record.todayLunchEnd || settings.lunchEnd);
     event("lunch-10", lunchEnd - 10 * 60000, "午休还有 10 分钟", "稍后准备继续工作。" );
     event("lunch-end", lunchEnd, "午休时间到了", "准备继续工作了吗？" );
-  } else if (!record.lunchStart) event("lunch-start", at(now, settings.lunchStart), "午饭时间到了", "记得让自己休息一下。" );
+  } else if (!record.lunchStart) event("lunch-start", at(now, record.todayLunchStart || settings.lunchStart), "午饭时间到了", "记得让自己休息一下。" );
 
   const bodyReminder = dueReminder(now, settings, record, view);
   if (bodyReminder === "water") alerts.push({ id: `water:${record.waterAt || record.start}:${record.waterSnoozeUntil || ""}`, title: "该喝水了", body: "喝口水，休息一下。" });

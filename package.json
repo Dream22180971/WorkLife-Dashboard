@@ -2,7 +2,7 @@
   "name": "worklife-dashboard",
   "private": false,
   "version": "0.1.0",
-  "description": "摸鱼助手 WorkLife Dashboard - 打工人桌面进度系统",
+  "description": "摸鱼助手 - 打工人桌面进度系统",
   "type": "module",
   "scripts": {
     "dev": "vite",
