@@ -1,3 +1,36 @@
+Turn the workday into a private, local-first progress bar with reminders and desktop widgets. / 把上班变成一条本地、私密、带提醒和桌面 Widget 的进度条。
+
+<!-- README-V2-BILINGUAL -->
+
+# WorkLife-Dashboard
+
+> **EN:** Turn the workday into a private, local-first progress bar with reminders and desktop widgets.  
+> **中文：** 把上班变成一条本地、私密、带提醒和桌面 Widget 的进度条。
+
+## Demo / 演示
+
+Existing full UI screenshots are kept below; a short widget/desktop GIF is the recommended next asset. / 下方保留完整 UI 截图，建议下一步补 Widget/桌面交互 GIF。
+
+## Quick Start / 5 分钟快速开始
+
+```bash
+git clone https://github.com/Dream22180971/WorkLife-Dashboard.git
+cd WorkLife-Dashboard
+npm install
+npm run tauri dev
+```
+
+> **EN:** Clone, install, run. Advanced configuration and project-specific details are documented below.  
+> **中文：** 克隆、安装、运行即可开始。高级配置和项目特定说明继续保留在下方。
+
+## Why this project / 为什么做这个项目
+
+**EN:** This project starts from one concrete problem and prioritizes being understandable, runnable and useful before becoming complex.
+
+**中文：** 这个项目从一个明确问题出发，优先做到易理解、能运行、真正有用，再逐步增加复杂能力。
+
+---
+
 <div align="center">
 
 # ◌ 摸鱼助手
