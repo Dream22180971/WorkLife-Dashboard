@@ -5,7 +5,6 @@ import { calculateDay, dueReminder, type RecordDay, type Settings } from "./work
 export type WorkAlert = { id: string; title: string; body: string };
 const sentKey = "worklife.notifications.sent";
 export const clearNotificationHistory = () => localStorage.removeItem(sentKey);
-let permission: Promise<boolean> | null = null;
 let sending = false;
 
 const at = (day: Date, time: string) => {
@@ -14,7 +13,7 @@ const at = (day: Date, time: string) => {
 };
 
 export function collectAlerts(now: Date, settings: Settings, record: RecordDay): WorkAlert[] {
-  if (!record.start || record.clockOut || record.remindersOff || record.mode === "leave" || (record.remindersPausedUntil && now.getTime() < new Date(record.remindersPausedUntil).getTime())) return [];
+  if (record.clockOut || record.remindersOff || record.mode === "leave" || (record.remindersPausedUntil && now.getTime() < new Date(record.remindersPausedUntil).getTime())) return [];
   if (record.date !== `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`) return [];
   const view = calculateDay(now, settings, record);
   const alerts: WorkAlert[] = [];
@@ -22,6 +21,11 @@ export function collectAlerts(now: Date, settings: Settings, record: RecordDay):
   const event = (id: string, when: number, title: string, body: string) => {
     if (current >= when && current < when + 30 * 60000) alerts.push({ id, title, body });
   };
+
+  if (!record.start) {
+    event("start-work", at(now, settings.start), "该开始今天了", "确认实际开工时间，开始记录今天的工作。");
+    return alerts;
+  }
 
   if (!view.lunching) {
     event("before-end", at(now, record.todayEnd || settings.end) - 30 * 60000, "还有 30 分钟下班", "今天的工作快到公司下班时间了。");
@@ -56,12 +60,25 @@ export async function notifyDueAlerts(now: Date, settings: Settings, record: Rec
   const ids = new Set(saved.date === date ? saved.ids : []);
   const unsent = alerts.filter(alert => !ids.has(alert.id));
   if (!unsent.length) return;
-  permission ||= (async () => (await isPermissionGranted()) || (await requestPermission()) === "granted")();
-  if (!await permission) return;
+  if (!await notificationPermission()) return;
   for (const alert of unsent) {
-    sendNotification({ title: alert.title, body: alert.body });
+    if (typeof window !== "undefined" && "__TAURI_INTERNALS__" in window) sendNotification({ title: alert.title, body: alert.body });
+    else new Notification(alert.title, { body: alert.body });
     ids.add(alert.id);
   }
   localStorage.setItem(sentKey, JSON.stringify({ date, ids: [...ids] }));
   } finally { sending = false; }
+}
+
+async function notificationPermission() {
+  if (typeof window !== "undefined" && "__TAURI_INTERNALS__" in window) return (await isPermissionGranted()) || (await requestPermission()) === "granted";
+  if (typeof Notification === "undefined") return false;
+  return Notification.permission === "granted" || (Notification.permission === "default" && await Notification.requestPermission() === "granted");
+}
+
+export async function sendTestNotification() {
+  if (!await notificationPermission()) return false;
+  if (typeof window !== "undefined" && "__TAURI_INTERNALS__" in window) sendNotification({ title: "摸鱼助手通知测试", body: "提醒已开启，到时间会通知你。" });
+  else new Notification("摸鱼助手通知测试", { body: "提醒已开启，到时间会通知你。" });
+  return true;
 }

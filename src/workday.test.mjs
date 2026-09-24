@@ -89,6 +89,13 @@ test("native alert plan includes enabled weekly tasks and work milestones", () =
   assert.deepEqual(collectAlerts(friday, settings, { ...active, clockOut: friday.toISOString() }), []);
 });
 
+test("scheduled start prompts for a clock-in before the day begins", () => {
+  const waiting = emptyDay("2026-09-23");
+  assert.ok(collectAlerts(local(9, 5), defaults, waiting).some(item => item.id === "start-work"));
+  assert.ok(!collectAlerts(local(8, 59), defaults, waiting).some(item => item.id === "start-work"));
+  assert.ok(!collectAlerts(local(9, 5), defaults, record()).some(item => item.id === "start-work"));
+});
+
 test("invalid work and lunch hours are rejected", () => {
   assert.ok(validateSettings({ ...defaults, end: "08:00" }));
   assert.ok(validateSettings({ ...defaults, lunchEnd: "19:00" }));
