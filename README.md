@@ -33,6 +33,10 @@
 | 桌面 Widget 陪跑，关主窗口也还在 | 不考核你、不打分、不和同事比 |
 
 **它是仪表盘，不是电子镣铐。**
+<img width="2524" height="1256" alt="image" src="https://github.com/user-attachments/assets/966a76ac-42fe-423e-b952-3dd41fe8bbc9" />
+
+<img width="2538" height="1099" alt="image" src="https://github.com/user-attachments/assets/2f044bae-8fd7-4253-975d-6a7d156e537f" />
+
 
 ---
 
