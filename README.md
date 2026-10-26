@@ -1,47 +1,47 @@
 <div align="center">
 
-# WorkLife Dashboard
+# 摸鱼助手 · WorkLife Dashboard
 
-**Turn the workday into a private, local-first progress bar with reminders and desktop widgets.**
+**把上班变成一条本地、私密、带提醒和桌面 Widget 的进度条。**
 
-[English](./README.md) | [简体中文](./README.zh-CN.md)
+[简体中文](./README.md) | [English](./README.en.md)
 
 [![Tauri](https://img.shields.io/badge/Tauri-2.x-24C8DB?style=for-the-badge&logo=tauri&logoColor=white)](https://tauri.app)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![Version](https://img.shields.io/badge/version-0.1.4-F59E0B?style=for-the-badge)](./package.json)
-[![License](https://img.shields.io/badge/LICENSE-MIT-10B981?style=for-the-badge)](#license)
+[![License](https://img.shields.io/badge/LICENSE-MIT-10B981?style=for-the-badge)](#许可证)
 
 </div>
 
 ---
 
-## 🎯 What it is
+## 🎯 它是什么
 
-WorkLife Dashboard is a desktop companion for people who want to see how much of the workday is left without turning work into another productivity competition.
+摸鱼助手是一个桌面端工作进度工具。它不把工作变成新的“效率竞赛”，只负责告诉你今天工作到哪了、还剩多久、什么时候该休息、什么时候可以收工。
 
-> **It is a dashboard, not a supervisor.**
+> **它是仪表盘，不是电子监工。**
 
 ---
 
-## 🎬 Demo
+## 🎬 演示
 
 <div align="center">
 
-<img width="92%" alt="WorkLife Dashboard main view" src="https://github.com/user-attachments/assets/966a76ac-42fe-423e-b952-3dd41fe8bbc9" />
+<img width="92%" alt="摸鱼助手主界面" src="https://github.com/user-attachments/assets/966a76ac-42fe-423e-b952-3dd41fe8bbc9" />
 
-<img width="92%" alt="WorkLife Dashboard secondary view" src="https://github.com/user-attachments/assets/2f044bae-8fd7-4253-975d-6a7d156e537f" />
+<img width="92%" alt="摸鱼助手其他界面" src="https://github.com/user-attachments/assets/2f044bae-8fd7-4253-975d-6a7d156e537f" />
 
 </div>
 
-> Next visual asset: a 10–15 second GIF showing the desktop widget, tray behavior and reminders.
+> 下一步最值得补的是 10–15 秒 GIF：展示桌面 Widget、系统托盘和提醒的完整交互。
 
 ---
 
-## 📦 Get it
+## 📦 直接使用
 
-Download the latest portable Windows build from **GitHub Releases**. No installer is required.
+从 **GitHub Releases** 下载最新 Windows 便携版，双击即可运行，不需要安装程序。
 
-For development:
+开发模式：
 
 ```bash
 git clone https://github.com/Dream22180971/WorkLife-Dashboard.git
@@ -51,114 +51,114 @@ npm install
 npm run tauri dev
 ```
 
-Requirements:
+环境要求：
 
 - Node.js
 - Rust
-- Windows is the primary tested desktop target
+- 当前主要测试平台为 Windows
 
 ---
 
-## ✨ Highlights
+## ✨ 核心功能
 
-| Feature | What it does |
+| 功能 | 说明 |
 |---|---|
-| ⏱ Workday progress | shows work, lunch and off-work progress in real time |
-| 🖥 Desktop Widget | small / medium / large desktop views |
-| 🔔 Reminders | lunch, water, movement and off-work notifications |
-| 🇨🇳 China work schedules | weekends, single-rest weeks, alternating weeks and holiday overrides |
-| 💰 Salary countdown | salary-day countdown and daily earning estimate |
-| 🪵 Electronic wooden fish | a tiny “merit +1” interaction |
-| 📊 Weekly review | effective hours, overtime and average check-out time |
-| 🔐 Local-first | personal settings and records stay on your device |
+| ⏱ 工作进度 | 实时展示工作、午休和下班进度 |
+| 🖥 桌面 Widget | 小 / 中 / 大三档桌面视图 |
+| 🔔 提醒 | 午饭、喝水、久坐、下班等系统提醒 |
+| 🇨🇳 中国工作制 | 双休、单休、大小周、法定节假日与补班 |
+| 💰 发薪日倒计时 | 发薪日和当日收入估算 |
+| 🪵 电子木鱼 | 上班功德 +1 的小互动 |
+| 📊 每周回顾 | 有效工时、加班、平均打卡时间 |
+| 🔐 本地优先 | 设置与记录默认保存在本机 |
 
 ---
 
-## ⏱ Daily Flow
+## ⏱ 一天怎么走
 
 ```text
-Start
+开始工作
   ↓
-Work
+工作
   ↓
-Lunch
+午饭
   ↓
-Resume
+继续工作
   ↓
-Company off-work time
+公司制度下班时间
   ↓
-Target hours reached
+目标工时达标
   ↓
-Check out
+打卡收工
 ```
 
-The app keeps **company off-work time** and **target work hours** as separate signals so the dashboard reflects the real workday instead of collapsing everything into one timer.
+系统会把 **公司制度下班时间** 和 **实际目标工时** 分开计算，让进度条更接近真实工作日，而不是把所有时间压成一个倒计时。
 
 ---
 
-## 🖥 Widget Modes
+## 🖥 Widget 模式
 
-| Size | Shows |
+| 尺寸 | 展示 |
 |---|---|
-| Small | countdown |
-| Medium | time + progress + state |
-| Large | work hours + next break + next holiday + merit |
+| 小 | 倒计时 |
+| 中 | 时间 + 进度 + 状态 |
+| 大 | 工时 + 下个休息日 + 下个节假日 + 功德 |
 
-The widget supports position memory, transparency and always-on-top behavior.
-
----
-
-## 🔔 Reminder System
-
-Available reminders include:
-
-- off-work in 30 minutes
-- off-work now
-- lunch
-- lunch break end
-- target work hours reached
-- drink water
-- move after sitting
-- weekly wrap-up tasks
-
-Recurring work reminders can be enabled or disabled independently.
+Widget 支持位置记忆、透明度和置顶。
 
 ---
 
-## 🇨🇳 China Work Schedule Support
+## 🔔 提醒系统
 
-Supported modes include:
+当前可用提醒包括：
 
-- two-day weekend
-- single weekly rest day
-- alternating weekends
-- custom working weekdays
-- official holiday and make-up workday overrides
+- 下班前 30 分钟
+- 到点下班
+- 午饭
+- 午休结束
+- 目标工时达标
+- 喝水
+- 久坐活动
+- 每周收尾事项
 
-Holiday data is configured explicitly rather than guessed.
-
----
-
-## 🔐 Privacy & Local-first
-
-- No account system.
-- No cloud sync.
-- No hidden telemetry.
-- Personal settings and records stay local.
+周期性工作提醒可以独立开启或关闭。
 
 ---
 
-## 🧪 Testing
+## 🇨🇳 中国工作制支持
+
+支持：
+
+- 双休
+- 单休
+- 大小周
+- 自定义每周工作日
+- 法定节假日与补班覆盖
+
+节假日数据采用明确配置，不提前猜测下一年的调休。
+
+---
+
+## 🔐 隐私与本地优先
+
+- 不需要注册账号。
+- 不做云同步。
+- 不做隐藏遥测。
+- 个人设置和记录留在本机。
+
+---
+
+## 🧪 测试
 
 ```bash
 npm test
 ```
 
-Current tests cover work-hour calculations, lunch deduction, reminders, holiday overrides, alternating-week schedules, temporary daily overrides, salary calculation and weekly statistics.
+当前测试覆盖工时计算、午休扣减、提醒、节假日覆盖、大小周、临时作息、工资估算和周统计等核心逻辑。
 
 ---
 
-## 🛠 Developer Commands
+## 🛠 开发命令
 
 ```bash
 npm run dev
@@ -168,45 +168,45 @@ npm run build
 npm run tauri build
 ```
 
-| Command | Purpose |
+| 命令 | 用途 |
 |---|---|
-| `npm run dev` | browser preview |
-| `npm run tauri dev` | full desktop app |
-| `npm test` | unit tests |
-| `npm run build` | production frontend build |
-| `npm run tauri build` | desktop build |
+| `npm run dev` | 浏览器预览 |
+| `npm run tauri dev` | 完整桌面版 |
+| `npm test` | 单元测试 |
+| `npm run build` | 前端生产构建 |
+| `npm run tauri build` | 桌面产物 |
 
 ---
 
-## 🗺 Roadmap
+## 🗺 路线图
 
-- [x] Workday progress
-- [x] Desktop widgets
-- [x] System tray
-- [x] Local reminders
-- [x] China work schedules
-- [x] Weekly statistics
-- [x] Salary-day countdown
-- [ ] Edge auto-hide
-- [ ] Mouse passthrough
-- [ ] Multi-monitor position memory
-- [ ] Global shortcuts
-- [ ] Monthly / reimbursement templates
-
----
-
-## 🤝 Contributing
-
-Bug reports, UX ideas and small feature PRs are welcome, especially around widgets, reminders and Windows desktop behavior.
+- [x] 工作日进度
+- [x] 桌面 Widget
+- [x] 系统托盘
+- [x] 本地提醒
+- [x] 中国工作制
+- [x] 每周统计
+- [x] 发薪日倒计时
+- [ ] 贴边隐藏
+- [ ] 鼠标穿透
+- [ ] 多屏位置记忆
+- [ ] 全局快捷键
+- [ ] 月报 / 报销模板
 
 ---
 
-## 📄 License
+## 🤝 参与贡献
+
+欢迎提交 Bug、交互建议和小功能 PR，尤其是 Widget、提醒和 Windows 桌面行为相关问题。
+
+---
+
+## 📄 许可证
 
 MIT © Dreamer
 
 <div align="center">
 
-**The company wants you to keep pushing. This app just tells you how long until you can go home.**
+**公司要你继续加油，它只负责告诉你：还剩多久下班。**
 
 </div>
